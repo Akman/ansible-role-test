@@ -1,12 +1,10 @@
 ---
 # tasks/main.yml
 
-- name: Test | Debug | Output common vars
+- name: Test | Debug | Output 'vars'
   debug:
-    msg: "{{ item }}"
-  with_items: 
-    - "{{ ocstore_playbook }}"
-    - "{{ ocstore_inventory }}"
-    - "{{ ocstore_environment }}"
-    - "{{ telegram_message }}"
-    
+    var: vars
+    verbosity: 3
+  become: yes
+
+- import_tasks: db.yml

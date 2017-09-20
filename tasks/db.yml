@@ -1,0 +1,41 @@
+---
+# tasks/db.yml
+
+- name: Test | DB | Ensure databases are present
+  mysql_db:
+    name: "{{ item.name }}"
+    collation: "{{ item.collation | default('utf8_general_ci') }}"
+    encoding: "{{ item.encoding | default('utf8') }}"
+    state: "present"
+  with_items: "{{ ocstore_mysql_databases }}"
+  register: ocstore_databases_state
+  become: yes
+
+- name: Test | DB | Ensure database users are present
+  mysql_user:
+    name: "{{ item.name }}"
+    host: "{{ item.host | default('localhost') }}"
+    password: "{{ item.password }}"
+    priv: "{{ item.priv | default('*.*:USAGE') }}"
+    state: "{{ item.state | default('present') }}"
+    append_privs: "{{ item.append_privs | default('no') }}"
+  with_items: "{{ ocstore_mysql_users }}"
+  become: yes
+
+- name: Test | DB | Iterate over newly created databases
+  include_tasks: created.yml
+  when: db_item.changed and not db_item.failed
+  with_items: 
+    - "{{ ocstore_databases_state.results }}"
+  loop_control:
+    loop_var: db_item
+  become: yes
+
+- name: Test | DB | Iterate over existed databases
+  include_tasks: existed.yml
+  when: not db_item.changed and not db_item.failed
+  with_items:
+    - "{{ ocstore_databases_state.results }}"
+  loop_control:
+    loop_var: db_item
+  become: yes

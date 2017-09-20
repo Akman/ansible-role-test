@@ -1,3 +1,6 @@
 ---
 # handlers/main.yml
 
+- name: Test | Debug | Handlers
+  debug:
+    msg: "Execute handlers"

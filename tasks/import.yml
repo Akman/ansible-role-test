@@ -1,0 +1,21 @@
+---
+# tasks/import.yml
+
+- name: Test | DB | Ensure database script is up to date '{{ db_item.item.name }}'
+  template: >
+    src="db.sql.j2"
+    dest="~/db.sql"
+    mode="600"
+  changed_when: False
+
+- block:
+    - name: Test | DB | Import database schema '{{ db_item.item.name }}'
+      mysql_db:
+        name: "{{ db_item.item.name }}"
+        state: "import"
+        target: "~/db.sql"
+  rescue:
+    - name: Test | DB | Ensure database absent '{{ db_item.item.name }}'
+      mysql_db:
+        name: "{{ db_item.item.name }}"
+        state: "absent"
