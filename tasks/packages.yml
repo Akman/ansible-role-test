@@ -8,6 +8,11 @@
   apt: update_cache=yes cache_valid_time=3600
   become: yes
 
+- name: Test | Packages | Wait for apt unlock state
+  shell: while fuser /var/lib/dpkg/lock >/dev/null 2>&1; do sleep 1; done;
+  changed_when: False
+  become: yes
+
 - name: Test | Packages | Install packages if needed
   apt: name={{ item }} state=installed
   with_items:
