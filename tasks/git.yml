@@ -1,0 +1,17 @@
+---
+# tasks/git.yml
+
+- name: Test | Git | Update repository
+  git:
+    repo: "{{ ocstore_git_repo }}"
+    dest: "{{ ocstore_www_root }}/{{ ocstore_repo_dir }}"
+    version: "{{ ocstore_git_branch }}"
+    accept_hostkey: "yes"
+    update: "yes"
+    force: "yes"
+    refspec: "{{ ocstore_git_refspec | default(omit) }}"
+  register: ocstore_git_result
+  
+- debug:
+    var: ocstore_git_result
+

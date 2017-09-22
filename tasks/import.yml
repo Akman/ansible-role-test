@@ -1,19 +1,26 @@
 ---
 # tasks/import.yml
 
+- name: Test | DB | Get random string
+  shell: head -c 512 /dev/urandom
+  register: _db_sql_script_filename
+  changed_when: false
+
+- name: Test | DB | Set database script filename '{{ db_item.item.name }}'
+  set_fact:
+    _db_sql_script_filename: "~/db.{{ (_db_sql_script_filename.stdout | regex_replace('[^_A-Za-z0-9]', ''))[:10] }}.sql"
+ 
 - name: Test | DB | Ensure database script is up to date '{{ db_item.item.name }}'
   template: >
     src="db.sql.j2"
-    dest="~/db.sql"
-    mode="600"
-  changed_when: False
+    dest="{{ _db_sql_script_filename }}"
 
 - block:
     - name: Test | DB | Import database schema '{{ db_item.item.name }}'
       mysql_db:
         name: "{{ db_item.item.name }}"
         state: "import"
-        target: "~/db.sql"
+        target: "{{ _db_sql_script_filename }}"
   rescue:
     - name: Test | DB | Ensure database absent '{{ db_item.item.name }}'
       mysql_db:

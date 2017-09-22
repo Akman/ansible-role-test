@@ -1,0 +1,7 @@
+---
+# tasks/vars.yml
+
+- name: Test | Vars | Show all vars
+  debug:
+    var: vars
+  become: yes

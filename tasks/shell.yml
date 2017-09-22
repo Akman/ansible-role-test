@@ -1,0 +1,11 @@
+---
+# tasks/shell.yml
+
+- name: Test | Shell | Result code
+  shell: ls -1dt {{ ocstore_www_root }}/{{ ocstore_releases_dir }}/* | tail -n +{{ ocstore_keep_releases | int + 1 }}
+  register: ocstore_delete_releases
+  changed_when: false
+  when: ocstore_keep_releases > 0
+
+- debug:
+    msg: "{{ ocstore_delete_releases.stdout_lines | length }}"

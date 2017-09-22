@@ -1,3 +1,5 @@
 ---
 # tasks/existed.yml
 
+- name: Test | Debug | Import database schema
+  import_tasks: import.yml

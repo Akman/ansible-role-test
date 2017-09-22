@@ -24,7 +24,7 @@ CREATE TABLE `test` (
 LOCK TABLES `test` WRITE;
 /*!40000 ALTER TABLE `test` DISABLE KEYS */;
 
-INSERT INTO `test` VALUES (1, 'Тест');
+INSERT INTO `test` VALUES (1, '{{ ocstore_hostname }}');
 
 /*!40000 ALTER TABLE `test` ENABLE KEYS */;
 UNLOCK TABLES;

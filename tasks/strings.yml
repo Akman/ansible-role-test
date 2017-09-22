@@ -1,0 +1,15 @@
+---
+# tasks/strings.yml
+
+- name: Test | Strings | Get random string
+  shell: head -c 512 /dev/urandom
+  register: _rand
+  changed_when: false
+
+- name: Test | Strings | Extract only [_A-Za-z0-9] chars with max length 20
+  set_fact:
+    _rand: "{{ (_rand.stdout | regex_replace('[^_A-Za-z0-9]', ''))[:10] }}"
+ 
+- name: Test | Strings | Output
+  debug:
+    var: _rand
