@@ -10,6 +10,6 @@
   set_fact:
     _rand: "{{ (_rand.stdout | regex_replace('[^_A-Za-z0-9]', ''))[:10] }}"
  
-- name: Test | Strings | Output
+- name: Test | Strings | Output random string
   debug:
     var: _rand

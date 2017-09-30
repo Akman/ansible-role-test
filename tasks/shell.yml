@@ -9,3 +9,31 @@
 
 - debug:
     msg: "{{ ocstore_delete_releases.stdout_lines | length }}"
+
+- name: Test | Shell | Init array of shell commands
+  set_fact:
+    cmds:
+      - { name: "aaa", cmd: "echo" }
+      - { name: "bbb", cmd: "echo" }
+      - { cmd: "echo" }
+
+- name: Test | Shell | Build one big command
+  set_fact:
+    cmd: |  
+          {% for item in cmds %}
+          {% if item.name is defined %}
+          {{ item.cmd }} "{{ item.name }}";
+          {% else %}
+          {{ item.cmd }} "name not defined";
+          {% endif %}
+          {% endfor %}
+
+- debug:
+    msg: "{{ cmd }}"
+
+- name: Test | Shell | Execute one big command
+  shell: "{{ cmd }}"
+  register: cmd_result
+          
+- debug:
+    var: cmd_result

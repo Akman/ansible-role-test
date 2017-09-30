@@ -5,6 +5,6 @@
 #- import_tasks: packages.yml
 #- import_tasks: db.yml
 #- import_tasks: folders.yml
-#- import_tasks: shell.yml
+- import_tasks: shell.yml
 #- import_tasks: git.yml
-- import_tasks: strings.yml
+#- import_tasks: strings.yml
