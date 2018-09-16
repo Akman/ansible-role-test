@@ -1,4 +1,4 @@
-# Ansible Role: test
+# Ansible Role: ansible_test
 
 Test inventories.
 
@@ -18,7 +18,7 @@ None.
 
     - hosts: all
       roles:
-        - Akman.test
+        - Akman.ansible_test
 
 *Inside `vars/main.yml`*:
 
