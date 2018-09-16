@@ -4,6 +4,7 @@
 dependencies: []
 
 galaxy_info:
+  role_name: ansible_test
   author: Akman
   description: Test inventories
   license: "license (MIT)"
